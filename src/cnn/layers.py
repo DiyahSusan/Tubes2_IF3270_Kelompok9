@@ -76,13 +76,54 @@ class Conv2D:
                     output_tensor[h, w, k] = np.sum(patch * kernel_k) + self.bias[k]
                     
         return output_tensor
+    
+class LocallyConnected2D:
+    def __init__(self, kernel_weights, bias_weights, kernel_size, stride=1):
+        self.kernel = kernel_weights
+        self.bias = bias_weights
+        self.kH, self.kW = kernel_size
+        self.stride = stride
 
-class MaxPooling2D:
-    def __init__(self, pool_size=2, stride=2):
+    def forward(self, input_tensor):
+        H, W, C_in = input_tensor.shape
+        out_H = int((H - self.kH) / self.stride) + 1
+        out_W = int((W - self.kW) / self.stride) + 1
+
+        num_positions, patch_dim, C_out = self.kernel.shape
+        assert num_positions == out_H * out_W, \
+            f"ERROR: Bobot mengharapkan {num_positions} posisi spasial, tapi hitungan kita {out_H * out_W}"
+        assert patch_dim == self.kH * self.kW * C_in, \
+            "ERROR: Dimensi patch input tidak sesuai dengan arsitektur bobot kernel!"
+        
+        output_tensor = np.zeros((out_H, out_W, C_out))
+
+        for h in range(out_H):
+            for w in range(out_W):
+                position = h * out_W + w
+
+                # batas patch pada gambar
+                h_start = h * self.stride
+                h_end = h_start + self.kH
+                w_start = w * self.stride
+                w_end = w_start + self.kW
+                
+                patch = input_tensor[h_start:h_end, w_start:w_end, :]
+                patch_flatten = patch.flatten()
+
+                kernel_position = self.kernel[position]
+                bias_position = self.bias[position]
+                
+                output_tensor[h, w, :] = np.dot(patch_flatten, kernel_position) + bias_position
+
+        return output_tensor
+
+class MaxAvgPooling2D:
+    def __init__(self, pool_size=2, stride=2, tipe='max'):
         self.pool_size = pool_size
         self.stride = stride
-        
-    def forward(self, input_tensor):
+        self.tipe = tipe
+
+    def forward(self, input_tensor, tipe=None):
         H, W, C = input_tensor.shape
         out_H = int((H - self.pool_size) / self.stride) + 1
         out_W = int((W - self.pool_size) / self.stride) + 1
@@ -96,9 +137,29 @@ class MaxPooling2D:
                 w_end = w_start + self.pool_size
                 
                 patch = input_tensor[h_start:h_end, w_start:w_end, :]
-                output_tensor[h, w, :] = np.max(patch, axis=(0, 1))
+                if tipe == 'max': 
+                    output_tensor[h, w, :] = np.max(patch, axis=(0, 1))
+                elif tipe == 'avg':
+                    output_tensor[h, w, :] = np.mean(patch, axis=(0, 1))
 
         return output_tensor
+    
+class GlobalMaxAvgPooling2D:
+    def __init__(self, tipe='max'):
+        self.tipe = tipe
+        
+    def forward(self, input_tensor, tipe=None):
+        if tipe is None:
+            tipe = self.tipe
+            
+        if tipe == 'max':
+            return np.max(input_tensor, axis=(0, 1))
+        elif tipe == 'avg':
+            return np.mean(input_tensor, axis=(0, 1))
+    
+class Flatten:
+    def forward(self, input_tensor):
+        return input_tensor.flatten()
 
 class Dense:
     def __init__(self, weights, bias):
@@ -106,11 +167,29 @@ class Dense:
         self.bias = bias
         
     def forward(self, input_tensor):
-        input_flat = input_tensor.flatten()
-        output = np.dot(input_flat, self.kernel) + self.bias
+        expected_input_dim = self.kernel.shape[0]
+        actual_input_dim = input_tensor.shape[0]
+        
+        assert actual_input_dim == expected_input_dim, f"ERROR DENSE: Harapannya input ukuran {expected_input_dim}, tapi dapat {actual_input_dim}!"
+        
+        output = np.dot(input_tensor, self.kernel) + self.bias
         return output
 
-class ReLU:
-    def forward(self, input_tensor):
-        return np.maximum(0, input_tensor)
-    
+# fungsi aktivasi
+class FungsiAktivasi:
+    def __init__(self, tipe='relu'):
+        self.tipe = tipe
+        
+    def forward(self, input_tensor, tipe=None):
+        if tipe is None:
+            tipe = self.tipe
+            
+        if tipe == 'relu':
+            return np.maximum(0, input_tensor)
+        elif tipe == 'sigmoid':
+            return 1 / (1 + np.exp(-input_tensor))
+        elif tipe == 'tanh':
+            return np.tanh(input_tensor)
+        elif tipe == 'softmax':
+            exp_values = np.exp(input_tensor - np.max(input_tensor))
+            return exp_values / np.sum(exp_values)

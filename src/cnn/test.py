@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import os
 
-from layers import CNN, Conv2D, MaxPooling2D, Dense, ReLU
+from layers import CNN, Conv2D, Flatten, MaxAvgPooling2D, Dense, FungsiAktivasi, LocallyConnected2D
 
 class TestCNNModels(unittest.TestCase):
 
@@ -21,8 +21,9 @@ class TestCNNModels(unittest.TestCase):
         
         model_cnn = CNN(layers=[
             Conv2D(kernel_weights=dummy_kernel, bias_weights=dummy_bias, stride=1, padding=0),
-            ReLU(),
-            MaxPooling2D(pool_size=2, stride=2),
+            FungsiAktivasi(tipe='relu'),
+            MaxAvgPooling2D(pool_size=2, stride=2, tipe='max'),
+            Flatten(),
             Dense(weights=dummy_dense_weights, bias=dummy_dense_bias)
         ])
         
@@ -33,8 +34,9 @@ class TestCNNModels(unittest.TestCase):
         
         model_baru = CNN(layers=[
             Conv2D(kernel_weights=np.zeros_like(dummy_kernel), bias_weights=np.zeros_like(dummy_bias), stride=1, padding=0),
-            ReLU(),
-            MaxPooling2D(pool_size=2, stride=2),
+            FungsiAktivasi(tipe='relu'),
+            MaxAvgPooling2D(pool_size=2, stride=2, tipe='max'),
+            Flatten(),
             Dense(weights=np.zeros_like(dummy_dense_weights), bias=np.zeros_like(dummy_dense_bias))
         ])
         
@@ -65,14 +67,43 @@ class TestCNNModels(unittest.TestCase):
         
         model_cnn = CNN(layers=[
             Conv2D(kernel_weights=dummy_kernel, bias_weights=dummy_bias, stride=1, padding=0),
-            ReLU(),
-            MaxPooling2D(pool_size=2, stride=2),
+            FungsiAktivasi(tipe='relu'),
+            MaxAvgPooling2D(pool_size=2, stride=2, tipe='max'),
+            Flatten(),
             Dense(weights=dummy_dense_weights, bias=dummy_dense_bias)
         ])
         
         output = model_cnn.forward(input_scratch)
         
         self.assertEqual(output.shape, (10,), "GAGAL: Output dari forward pass tidak memiliki shape yang diharapkan (10,)")
+
+    def test_locally_connected_layer(self):
+        H, W, C_in = 5, 5, 3
+        
+        kH, kW = 3, 3
+        stride = 1
+        C_out = 2
+        
+        out_H = int((H - kH) / stride) + 1
+        out_W = int((W - kW) / stride) + 1
+        num_positions = out_H * out_W
+        patch_dim = kH * kW * C_in
+        
+        dummy_kernel = np.random.rand(num_positions, patch_dim, C_out)
+        dummy_bias = np.random.rand(num_positions, C_out)
+        
+        scratch_lc = LocallyConnected2D(
+            kernel_weights=dummy_kernel, 
+            bias_weights=dummy_bias, 
+            kernel_size=(kH, kW), 
+            stride=stride
+        )
+        
+        self.assertEqual(
+            scratch_lc.kernel.shape, 
+            (num_positions, patch_dim, C_out), 
+            "GAGAL: Bobot kernel LC dari scratch tidak sesuai dengan standar arsitektur Keras!"
+        )
 
 if __name__ == '__main__':
     unittest.main()

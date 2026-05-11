@@ -19,12 +19,9 @@ class CNN:
                 
         filepath = 'src/weights/' + filepath if not filepath.endswith('.npz') else filepath
         np.savez(filepath, **weights_dict)
-        print(f"Bobot model berhasil disimpan ke {filepath}.npz")
+        print(f"Bobot model berhasil disimpan ke {filepath}")
 
     def load_weights(self, filepath):
-        if not filepath.endswith('.npz'):
-            filepath = 'src/weights/' + filepath + '.npz'
-            
         data = np.load(filepath)
         for idx, layer in enumerate(self.layers):
             kernel_key = f'layer_{idx}_kernel'
@@ -34,7 +31,7 @@ class CNN:
                 layer.kernel = data[kernel_key]
                 layer.bias = data[bias_key]
                 
-        print(f"Bobot model berhasil di-load dari {filepath}.npz")
+        print(f"Bobot model berhasil di-load dari {filepath}")
 
 class Conv2D:
     def __init__(self, kernel_weights, bias_weights, stride=1, padding=0):
@@ -125,16 +122,19 @@ class MaxAvgPooling2D:
 
     def forward(self, input_tensor, tipe=None):
         H, W, C = input_tensor.shape
-        out_H = int((H - self.pool_size) / self.stride) + 1
-        out_W = int((W - self.pool_size) / self.stride) + 1
+        pool_h = self.pool_size[0] if isinstance(self.pool_size, tuple) else self.pool_size
+        pool_w = self.pool_size[1] if isinstance(self.pool_size, tuple) else self.pool_size
+        
+        out_H = int((H - pool_h) / self.stride) + 1
+        out_W = int((W - pool_w) / self.stride) + 1
 
         output_tensor = np.zeros((out_H, out_W, C))
         for h in range(out_H):
             for w in range(out_W):
                 h_start = h * self.stride
-                h_end = h_start + self.pool_size
+                h_end = h_start + pool_h
                 w_start = w * self.stride
-                w_end = w_start + self.pool_size
+                w_end = w_start + pool_w
                 
                 patch = input_tensor[h_start:h_end, w_start:w_end, :]
                 if tipe == 'max': 

@@ -29,7 +29,7 @@ class TestCNNModels(unittest.TestCase):
         
         hasil_awal = model_cnn.forward(input_scratch)
         
-        test_filepath = "test_bobot_dummy"
+        test_filepath = "test_bobot_dummy.npz"
         model_cnn.save_weights(test_filepath)
         
         model_baru = CNN(layers=[
@@ -103,6 +103,17 @@ class TestCNNModels(unittest.TestCase):
             scratch_lc.kernel.shape, 
             (num_positions, patch_dim, C_out), 
             "GAGAL: Bobot kernel LC dari scratch tidak sesuai dengan standar arsitektur Keras!"
+        )
+
+    def test_flatten_layer(self):
+        input_tensor = np.random.rand(4, 4, 3)
+        flatten_layer = Flatten()
+        output = flatten_layer.forward(input_tensor)
+        
+        self.assertEqual(
+            output.shape, 
+            (48,), 
+            "GAGAL: Output dari Flatten tidak memiliki shape yang diharapkan (48,)"
         )
 
 if __name__ == '__main__':

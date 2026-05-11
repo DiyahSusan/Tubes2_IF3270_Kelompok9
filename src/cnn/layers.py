@@ -121,6 +121,9 @@ class MaxAvgPooling2D:
         self.tipe = tipe
 
     def forward(self, input_tensor, tipe=None):
+        if tipe is None:
+            tipe = self.tipe
+
         H, W, C = input_tensor.shape
         pool_h = self.pool_size[0] if isinstance(self.pool_size, tuple) else self.pool_size
         pool_w = self.pool_size[1] if isinstance(self.pool_size, tuple) else self.pool_size

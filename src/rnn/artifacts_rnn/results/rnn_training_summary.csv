@@ -1,0 +1,7 @@
+name,num_layers,hidden_size,train_time_sec,best_val_loss,model_path
+rnn_1layer_128hidden,1,128,444.40435767173767,2.2503397464752197,artifacts_rnn\models\rnn_1layer_128hidden.keras
+rnn_1layer_512hidden,1,512,318.5886471271515,2.271674633026123,artifacts_rnn\models\rnn_1layer_512hidden.keras
+rnn_2layer_128hidden,2,128,139.85482025146484,2.388385057449341,artifacts_rnn\models\rnn_2layer_128hidden.keras
+rnn_2layer_512hidden,2,512,370.0023784637451,2.412491798400879,artifacts_rnn\models\rnn_2layer_512hidden.keras
+rnn_3layer_128hidden,3,128,146.91951084136963,2.4201877117156982,artifacts_rnn\models\rnn_3layer_128hidden.keras
+rnn_3layer_512hidden,3,512,447.72492265701294,2.3831069469451904,artifacts_rnn\models\rnn_3layer_512hidden.keras

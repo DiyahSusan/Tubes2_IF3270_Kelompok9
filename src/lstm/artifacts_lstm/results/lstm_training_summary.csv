@@ -1,7 +1,7 @@
-name,num_layers,hidden_size,train_time_sec,best_val_loss,model_path
-lstm_1layer_128hidden,1,128,651.6817448139191,1.8477996587753296,artifacts_lstm\models\lstm_1layer_128hidden.keras
-lstm_1layer_512hidden,1,512,1982.1389272212982,1.7329998016357422,artifacts_lstm\models\lstm_1layer_512hidden.keras
-lstm_2layer_128hidden,2,128,852.2903561592102,1.8738396167755127,artifacts_lstm\models\lstm_2layer_128hidden.keras
-lstm_2layer_512hidden,2,512,3126.7981317043304,1.7606087923049927,artifacts_lstm\models\lstm_2layer_512hidden.keras
-lstm_3layer_128hidden,3,128,1006.151664018631,2.037789821624756,artifacts_lstm\models\lstm_3layer_128hidden.keras
-lstm_3layer_512hidden,3,512,4618.764656305313,1.8235939741134644,artifacts_lstm\models\lstm_3layer_512hidden.keras
+name,num_layers,hidden_size,epochs_ran,train_time_sec,best_val_loss,final_train_loss,final_val_loss,model_path
+lstm_1layer_128hidden,1,128,15,851.4100437164307,2.9410898685455322,2.6628928184509277,2.9410898685455322,artifacts_lstm\models\lstm_1layer_128hidden.keras
+lstm_1layer_512hidden,1,512,15,2672.349172592163,2.8424630165100098,1.98941969871521,2.9264581203460693,artifacts_lstm\models\lstm_1layer_512hidden.keras
+lstm_2layer_128hidden,2,128,15,942.0705378055573,2.935206413269043,2.6716995239257812,2.935206413269043,artifacts_lstm\models\lstm_2layer_128hidden.keras
+lstm_2layer_512hidden,2,512,15,2954.022350549698,2.890883445739746,2.0743167400360107,2.957841157913208,artifacts_lstm\models\lstm_2layer_512hidden.keras
+lstm_3layer_128hidden,3,128,15,621.1440217494965,3.011341094970703,2.7953803539276123,3.011341094970703,artifacts_lstm\models\lstm_3layer_128hidden.keras
+lstm_3layer_512hidden,3,512,15,3546.38250207901,2.984577178955078,2.356954574584961,2.98543643951416,artifacts_lstm\models\lstm_3layer_512hidden.keras

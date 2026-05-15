@@ -11,7 +11,6 @@ def relu(x: np.ndarray) -> np.ndarray:
 
 
 def softmax(x: np.ndarray, axis: int = -1) -> np.ndarray:
-    # stabil secara numerik
     z = x - np.max(x, axis=axis, keepdims=True)
     exp_z = np.exp(z)
     return exp_z / np.sum(exp_z, axis=axis, keepdims=True)
@@ -31,7 +30,6 @@ def apply_activation(x: np.ndarray, activation: str | None) -> np.ndarray:
 
 class EmbeddingScratch:
     def __init__(self, weights: np.ndarray):
-        # weights shape: (vocab_size, embed_dim)
         self.W = weights.astype(np.float32)
 
     def forward(self, token_ids: np.ndarray) -> np.ndarray:
@@ -41,7 +39,6 @@ class EmbeddingScratch:
 
 class DenseScratch:
     def __init__(self, W: np.ndarray, b: np.ndarray, activation: str | None = None):
-        # Keras Dense kernel shape: (input_dim, output_dim)
         self.W = W.astype(np.float32)
         self.b = b.astype(np.float32)
         self.activation = activation
@@ -54,9 +51,7 @@ class DenseScratch:
 class SimpleRNNCellScratch:
     def __init__(self, kernel: np.ndarray, recurrent_kernel: np.ndarray, bias: np.ndarray,
                  activation: str = "tanh"):
-        # kernel shape: (input_dim, units)
-        # recurrent_kernel shape: (units, units)
-        # bias shape: (units,)
+
         self.Wx = kernel.astype(np.float32)
         self.Wh = recurrent_kernel.astype(np.float32)
         self.b = bias.astype(np.float32)
@@ -64,7 +59,6 @@ class SimpleRNNCellScratch:
         self.units = self.b.shape[0]
 
     def step(self, x_t: np.ndarray, h_prev: np.ndarray) -> np.ndarray:
-        # x_t: (batch, input_dim), h_prev: (batch, units)
         h = x_t @ self.Wx + h_prev @ self.Wh + self.b
         return apply_activation(h, self.activation)
 
@@ -88,7 +82,7 @@ class SimpleRNNLayerScratch:
             h_t = self.cell.step(x[:, t, :], h_t)
             outputs.append(h_t)
 
-        output_seq = np.stack(outputs, axis=1)  # (batch, seq_len, units)
+        output_seq = np.stack(outputs, axis=1)  
         if self.return_sequences:
             return output_seq, h_t
         return h_t, h_t
@@ -106,11 +100,10 @@ class RNNCaptionDecoderScratch:
         self.word_to_idx = word_to_idx
 
     def _make_preinject_sequence(self, image_features: np.ndarray, input_token_ids: np.ndarray) -> np.ndarray:
-        # feature_embed: (batch, embed_dim)
         feature_embed = self.feature_projection.forward(image_features)
-        feature_embed = feature_embed[:, None, :]  # (batch, 1, embed_dim)
+        feature_embed = feature_embed[:, None, :] 
 
-        word_embed = self.embedding.forward(input_token_ids)  # (batch, caption_len, embed_dim)
+        word_embed = self.embedding.forward(input_token_ids) 
         x = np.concatenate([feature_embed, word_embed], axis=1)
         return x
 
@@ -121,7 +114,7 @@ class RNNCaptionDecoderScratch:
         for rnn in self.rnn_layers:
             x, _ = rnn.forward(x)
 
-        logits = self.output_dense.forward(x)  # output_dense sudah softmax jika activation="softmax"
+        logits = self.output_dense.forward(x)
         return logits
 
     def predict_next_distribution(self, image_features: np.ndarray, input_token_ids: np.ndarray) -> np.ndarray:
@@ -160,15 +153,13 @@ class RNNCaptionDecoderScratch:
 def build_scratch_decoder_from_keras(keras_model, layer_names: dict,
                                      idx_to_word: dict[int, str] | None = None,
                                      word_to_idx: dict[str, int] | None = None) -> RNNCaptionDecoderScratch:
-    # Dense projection CNN feature -> embed_dim
+    
     Wp, bp = keras_model.get_layer(layer_names["feature_projection"]).get_weights()
     feature_projection = DenseScratch(Wp, bp, activation=None)
 
-    # Embedding token -> embed_dim
     We = keras_model.get_layer(layer_names["embedding"]).get_weights()[0]
     embedding = EmbeddingScratch(We)
 
-    # SimpleRNN layer(s)
     rnn_layers = []
     for name in layer_names["rnn_layers"]:
         kernel, recurrent_kernel, bias = keras_model.get_layer(name).get_weights()
@@ -180,7 +171,6 @@ def build_scratch_decoder_from_keras(keras_model, layer_names: dict,
             )
         )
 
-    # Dense output hidden -> vocab softmax
     Wo, bo = keras_model.get_layer(layer_names["output_dense"]).get_weights()
     output_dense = DenseScratch(Wo, bo, activation="softmax")
 

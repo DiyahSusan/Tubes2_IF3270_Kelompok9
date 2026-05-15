@@ -1,7 +1,7 @@
 name,num_layers,hidden_size,train_time_sec,best_val_loss,model_path
-lstm_1layer_128hidden,1,128,2157.775130033493,1.8512580394744873,artifacts_lstm\models\lstm_1layer_128hidden.keras
-lstm_1layer_512hidden,1,512,5550.487270355225,1.7396469116210938,artifacts_lstm\models\lstm_1layer_512hidden.keras
-lstm_2layer_128hidden,2,128,2773.076881170273,1.8893433809280396,artifacts_lstm\models\lstm_2layer_128hidden.keras
-lstm_2layer_512hidden,2,512,7974.031017780304,1.7548755407333374,artifacts_lstm\models\lstm_2layer_512hidden.keras
-lstm_3layer_128hidden,3,128,3819.3300330638885,2.037789821624756,artifacts_lstm\models\lstm_3layer_128hidden.keras
-lstm_3layer_512hidden,3,512,7325.592094182968,1.8235939741134644,artifacts_lstm\models\lstm_3layer_512hidden.keras
+lstm_1layer_128hidden,1,128,651.6817448139191,1.8477996587753296,artifacts_lstm\models\lstm_1layer_128hidden.keras
+lstm_1layer_512hidden,1,512,1982.1389272212982,1.7329998016357422,artifacts_lstm\models\lstm_1layer_512hidden.keras
+lstm_2layer_128hidden,2,128,852.2903561592102,1.8738396167755127,artifacts_lstm\models\lstm_2layer_128hidden.keras
+lstm_2layer_512hidden,2,512,3126.7981317043304,1.7606087923049927,artifacts_lstm\models\lstm_2layer_512hidden.keras
+lstm_3layer_128hidden,3,128,1006.151664018631,2.037789821624756,artifacts_lstm\models\lstm_3layer_128hidden.keras
+lstm_3layer_512hidden,3,512,4618.764656305313,1.8235939741134644,artifacts_lstm\models\lstm_3layer_512hidden.keras

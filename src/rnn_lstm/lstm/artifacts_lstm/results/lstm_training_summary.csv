@@ -1,0 +1,7 @@
+name,model_type,num_layers,hidden_size,epochs_ran,train_time_sec,best_val_loss,final_train_loss,final_val_loss,model_path
+lstm_1layer_128hidden,LSTM,1,128,10,271.55317878723145,3.704482316970825,3.5013504028320312,3.704482316970825,C:\Users\Anella Utari\Documents\GitHub\Tubes2_IF3270_Kelompok9\src\rnn&lstm\lstm\artifacts_lstm\models\lstm_1layer_128hidden.keras
+lstm_1layer_512hidden,LSTM,1,512,10,1007.3892207145691,3.5846195220947266,2.942244052886963,3.6075844764709473,C:\Users\Anella Utari\Documents\GitHub\Tubes2_IF3270_Kelompok9\src\rnn&lstm\lstm\artifacts_lstm\models\lstm_1layer_512hidden.keras
+lstm_2layer_128hidden,LSTM,2,128,10,337.49317812919617,3.7367711067199707,3.6091697216033936,3.7367711067199707,C:\Users\Anella Utari\Documents\GitHub\Tubes2_IF3270_Kelompok9\src\rnn&lstm\lstm\artifacts_lstm\models\lstm_2layer_128hidden.keras
+lstm_2layer_512hidden,LSTM,2,512,10,1585.220220565796,3.6095731258392334,3.0493288040161133,3.6187164783477783,C:\Users\Anella Utari\Documents\GitHub\Tubes2_IF3270_Kelompok9\src\rnn&lstm\lstm\artifacts_lstm\models\lstm_2layer_512hidden.keras
+lstm_3layer_128hidden,LSTM,3,128,10,421.7777910232544,3.9234015941619873,3.857534170150757,3.9234015941619873,C:\Users\Anella Utari\Documents\GitHub\Tubes2_IF3270_Kelompok9\src\rnn&lstm\lstm\artifacts_lstm\models\lstm_3layer_128hidden.keras
+lstm_3layer_512hidden,LSTM,3,512,10,2097.3217737674713,3.6950199604034424,3.283759593963623,3.6950199604034424,C:\Users\Anella Utari\Documents\GitHub\Tubes2_IF3270_Kelompok9\src\rnn&lstm\lstm\artifacts_lstm\models\lstm_3layer_512hidden.keras

@@ -27,14 +27,10 @@ class LSTMFromScratch:
     def forward(self, cnn_feature, input_tokens):
         cnn_feature = cnn_feature.astype(np.float32)
 
-        # x(-1): projected CNN feature
         image_embedding = self.feature_projection_layer.forward(cnn_feature)
         image_embedding = image_embedding.reshape(1, -1)
-
-        # x(0), x(1), ...: word embeddings
         word_embeddings = self.embedding_layer.forward(input_tokens)
 
-        # [CNN_feature, emb(<start>), emb(word_1), ...]
         sequence = np.concatenate(
             [image_embedding, word_embeddings],
             axis=0,

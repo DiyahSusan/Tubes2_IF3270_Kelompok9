@@ -37,6 +37,8 @@ def build_keras_rnn_decoder(
             name=f"rnn_{i+1}"
         )(x)
 
+    x = x[:, 1:, :]
+
     output = layers.Dense(
         vocab_size,
         activation="softmax",

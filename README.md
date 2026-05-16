@@ -18,11 +18,11 @@ git clone https://github.com/DiyahSusan/Tubes2_IF3270_Kelompok9
 ```
 2. Menjalankan Notebook
 ```
-Klik **run all** pada notebook yang diinginkan. Notebook dipisah sesuai dengan kebutuhan pengujian masing-masing. Jika ingin menjalankan pengujian tertentu, bisa dilakukan dengan menjalankan notebook terkait.
+Klik run all pada notebook yang diinginkan. Notebook dipisah sesuai dengan kebutuhan pengujian masing-masing. Jika ingin menjalankan pengujian tertentu, bisa dilakukan dengan menjalankan notebook terkait.
 ```
 3. Load Bobot
 ```
-Apabila ingin melakukan load bobot yang telah di training, dapat dilakukan dengan mengakses link berikut https://drive.google.com/drive/folders/15-DOW65vbcVk7K3fiKskExP_-ZlEkVcm?usp=drive_link
+Apabila ingin melakukan load bobot yang telah di-training, dapat dilakukan dengan mengakses link berikut https://drive.google.com/drive/folders/15-DOW65vbcVk7K3fiKskExP_-ZlEkVcm?usp=drive_link
 ```
 4. CNN, RNN, dan LSTM from scratch dapat diimport dari folder src sesuai dengan kebutuhan. Contoh penggunaannya tertera dalam notebook.
 

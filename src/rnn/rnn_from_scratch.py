@@ -9,7 +9,6 @@ def tanh(x: np.ndarray) -> np.ndarray:
 def relu(x: np.ndarray) -> np.ndarray:
     return np.maximum(0, x)
 
-
 def softmax(x: np.ndarray, axis: int = -1) -> np.ndarray:
     z = x - np.max(x, axis=axis, keepdims=True)
     exp_z = np.exp(z)
